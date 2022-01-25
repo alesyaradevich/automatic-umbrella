@@ -18,7 +18,6 @@ class DB
                      CONSTRAINT users1_email_key UNIQUE (email)
                    )')
       rescue
-      #puts "Table already exists"
       end
       begin
         @con.exec('CREATE TABLE IF NOT EXISTS public.users2
@@ -32,7 +31,6 @@ class DB
                      REFERENCES public.users1 (userid)
                    )')
       rescue
-      #puts "Table already exists"
       end
       begin
         @con.exec('CREATE TABLE IF NOT EXISTS public.pictures
@@ -44,7 +42,6 @@ class DB
                     CONSTRAINT pictures_url_key UNIQUE (url)
                   )')
       rescue
-      #puts "Table already exists"
       # Ignored
       end
       begin
@@ -57,7 +54,6 @@ class DB
                     CONSTRAINT avatars_url_key UNIQUE (url)
                   )')
       rescue
-      #puts "Table already exists"
       # Ignored
       end
       begin
@@ -72,7 +68,6 @@ class DB
                     REFERENCES public.users1 (userid)
                   )')
       rescue
-      #puts "Table already exists"
       # Ignored
       end
     end
@@ -80,10 +75,10 @@ class DB
     def delete_table_content
       begin
         @con.exec("TRUNCATE users1, users2, pictures, user_picture, avatars CASCADE")
-      #puts "tables were truncated"
-      #rescue
-      #puts "Tables were not truncated."
-      #end
+      puts "tables were truncated"
+      rescue
+      puts "Tables were not truncated."
+      end
     end
 
     def import_csv_to_table(file_path, table_name)
@@ -95,20 +90,20 @@ class DB
       end
     end
 
-    def select1
+    def select_users
       @con.exec( 'SELECT * from users1
                JOIN users2
                ON users1.userid = users2.userid' )
     end
 
-    def select2
+    def select_avatars
       @con.exec( 'SELECT user_id, nickname, avatar_id, alttext FROM avatars
                JOIN users1
                ON avatars.user_id = users1.userid
                ORDER BY avatars.user_id;' )
     end
 
-    def select3 (user_id)
+    def select_pictures (user_id)
       @con.exec( "SELECT u.userid, p.id, p.alttext
                   FROM users1 AS u
                   INNER JOIN user_picture AS up
@@ -117,6 +112,5 @@ class DB
                   ON up.picture_id = p.id
                   WHERE userid = #{user_id}" )
 
-    end
     end
 end

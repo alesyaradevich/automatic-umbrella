@@ -22,13 +22,13 @@ loop do
   answer = gets.chomp
   case answer
   when "1"
-    puts con.select1.entries
+    puts con.select_users.entries
   when "2"
-    puts con.select2.entries
+    puts con.select_avatars.entries
   when "3"
     puts "Select user."
     user_id = gets.chomp
-    puts con.select3(user_id).entries
+    puts con.select_pictures(user_id).entries
   when "0"
     break
   else
